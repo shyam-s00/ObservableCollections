@@ -93,3 +93,19 @@ class RxNotificationTest(unittest.TestCase):
         self.assertEqual(expectedMessages, obs.messages)
         self.assertEqual(4, len(obs.messages))
 
+    def test_Observablelist_duplicate_items_produces_events(self):
+        # arrange
+        expectedMessages = [ on_next(0, 1), on_next(0, 1), on_next(0, 1) ]
+        obs = self.scheduler.create_observer()
+
+        self.ol.when_collection_changes() \
+                .map(lambda x: x.Items) \
+                .subscribe(obs)
+        
+        # act
+        self.ol.append(1)
+        self.ol.append(1)
+        self.ol.append(1)
+        
+        # assert
+        self.assertEqual(expectedMessages, obs.messages)

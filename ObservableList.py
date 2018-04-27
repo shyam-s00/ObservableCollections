@@ -1,4 +1,5 @@
 import threading
+import time
 
 from rx import Observable, Observer
 from rx.core import ObservableBase
@@ -34,7 +35,7 @@ class ObservableList(Sequence):
     # list methods 
     def append(self, item) -> None:
         with self.lock:
-            self.check_disposed()        
+            self.check_disposed()
             self.list.append(item)
             self._onCollectionChanges(CollectionChange.Add(self, item))
 
