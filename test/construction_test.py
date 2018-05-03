@@ -1,5 +1,5 @@
 import unittest
-from ObservableList import ObservableList
+from reactive.ObservableList import ObservableList
 
 
 class CollectionConstructionTests(unittest.TestCase):

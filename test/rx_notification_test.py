@@ -2,9 +2,9 @@ import unittest
 
 from rx.testing import ReactiveTest, TestScheduler
 
-from ObservableList import ObservableList
-from CollectionChange import CollectionChange
-from CollectionChangeAction import CollectionChangeAction
+from reactive.ObservableList import ObservableList
+from reactive.CollectionChange import CollectionChange
+from reactive.CollectionChangeAction import CollectionChangeAction
 
 on_next = ReactiveTest.on_next
 

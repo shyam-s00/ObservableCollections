@@ -6,7 +6,7 @@ from concurrent import futures
 from concurrent.futures import ThreadPoolExecutor
 from rx.testing import TestScheduler
 
-from ObservableList import ObservableList
+from reactive.ObservableList import ObservableList
 
 class ConcurrentModification(unittest.TestCase):
 
@@ -15,7 +15,7 @@ class ConcurrentModification(unittest.TestCase):
         self.scheduler = TestScheduler()
 
     def test_try_making_multiple_ops_in_concurrent_futures(self):
-        # Not sure if this tests the thread safety of the collection
+        # Not sure if this is testing thread safety of the collection
         # arrange
         obs = self.scheduler.create_observer()
         self.ol.when_collection_changes() \
@@ -32,12 +32,12 @@ class ConcurrentModification(unittest.TestCase):
     
     def test_observableList_with_stress_append(self):
         # Write similar test cases to stress test the collections performance. 
-        setup = '''from ObservableList import ObservableList
+        setup = '''from reactive.ObservableList import ObservableList
 from random import randrange
 
 ol = ObservableList()'''
+
         cmd = 'ol.append(randrange(0, 2000))'
 
-        result = timeit(cmd, setup=setup, number=2000)
-
-        self.assertIsNotNone(result)
+        result = timeit(cmd, setup=setup, number=20000)        
+        self.assertIsNotNone(result)        

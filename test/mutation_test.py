@@ -1,6 +1,6 @@
 import unittest
 
-from ObservableList import ObservableList
+from reactive.ObservableList import ObservableList
 
 class ObservableListMutationTests(unittest.TestCase):
 
@@ -31,10 +31,9 @@ class ObservableListMutationTests(unittest.TestCase):
         # arrange & act
         self.loadedList.remove(1)
 
-        # assert
-        with self.assertRaises(ValueError):
-            self.emptyList.remove(1)
-            self.loadedList.remove(5)
+        # assert        
+        self.emptyList.remove(1) # This will not raise value error but push valueerror to on_error.
+        self.loadedList.remove(5)        
 
         self.assertEqual(len(self.loadedList), 3)
 
