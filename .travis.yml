@@ -4,6 +4,9 @@ python:
 
 install: 
   - pip install rx
+  - python setup.py install
+  - pip install coveralls
+  - pip install coverage
 
 script:  coverage run --source=reactive setup.py test
 after_success:
