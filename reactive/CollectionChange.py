@@ -40,4 +40,4 @@ class CollectionChange:
 
     @classmethod
     def IndexChanged(cls, source):
-        return cls(source=source, action=CollectionChangeAction.INDEX)
+        return cls(source=source, action=CollectionChangeAction.INDEX, items=source.list)

@@ -68,3 +68,46 @@ class ObservableListMutationTests(unittest.TestCase):
         self.assertEqual(8, len(ol))
         self.assertEqual(ObservableList([1,2,3,4,5,6,7,8]), ol)
 
+    def test_sort_rearranges_elements_in_ascending(self):
+        # arrange
+        ol = ObservableList([5,1,2,6,4,3])
+
+        # act
+        ol.sort()
+
+        # assert
+        self.assertEqual(ObservableList([1,2,3,4,5,6]), ol)
+
+    def test_sort_rearranges_elements_in_descending(self):
+        # arrange
+        ol = ObservableList([5,1,2,6,4,3])
+
+        # act
+        ol.sort(reverse=True)
+
+        # assert
+        self.assertEqual(ObservableList([6,5,4,3,2,1]), ol)
+
+    def test_count_returns_count_ofelement_or_zero(self):
+        # arrange
+        self.loadedList.extend([1,2,3,4])
+
+        # act
+        count = self.loadedList.count(None)
+        twoCount = self.loadedList.count(2)
+
+        # assert
+        self.assertEqual(0, count)
+        self.assertEqual(2, twoCount)
+
+    def test_clear_completely_removes_all_items_fromthe_list(self):
+        # arrange
+        self.loadedList.extend([5,6,7,8])
+
+        # act
+        self.loadedList.clear()
+        self.emptyList.clear()
+
+        # assert
+        self.assertEqual(0, len(self.emptyList))
+        self.assertEqual(0, len(self.loadedList))

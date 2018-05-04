@@ -95,7 +95,7 @@ class ObservableList(Sequence):
         """ sort the list in ascending / descending order and publishes the change notification if required. """
         with self.lock:
             self.check_disposed()
-            self.list.sort(key, reverse)
+            self.list.sort(key=key, reverse=reverse)
             if not suppress:
                 self._onCollectionChanges(CollectionChange.IndexChanged(self))
 
