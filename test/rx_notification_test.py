@@ -170,3 +170,6 @@ class RxNotificationTest(unittest.TestCase):
 
         # assert
         self.assertEqual(obs.messages, expectedMessages)
+
+    def tearDown(self):
+        self.ol.dispose()

@@ -111,3 +111,7 @@ class ObservableListMutationTests(unittest.TestCase):
         # assert
         self.assertEqual(0, len(self.emptyList))
         self.assertEqual(0, len(self.loadedList))
+
+    def tearDown(self):
+        self.emptyList.dispose()
+        self.loadedList.dispose()
