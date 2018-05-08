@@ -155,6 +155,23 @@ class RxNotificationTest(unittest.TestCase):
         # assert
         self.assertEqual(obs.messages, expected_messages)
 
+    def test_ObservableList_reversed_sorts_in_descending_and_not_produce_event(self):
+        # arrange
+        expected_message = []
+        obs = self.scheduler.create_observer()
+
+        self.ol.when_collection_changes() \
+            .map(lambda x: x.Items) \
+            .subscribe(obs)
+
+        # act
+        reverse_list = reversed(self.ol)
+
+        # assert
+        self.assertEqual(ObservableList([4, 5, 6, 7]), self.ol)
+        self.assertEqual(ObservableList([7, 6, 5, 4]), reverse_list)
+        self.assertEqual(obs.messages, expected_message)
+
     def test_ObservableList_clear_removes_everything_produces_event(self):
         # arrange
         expected_messages = [on_next(0, [])]

@@ -27,13 +27,21 @@ class ObservableList(Sequence):
     def __getitem__(self, index):
         return self.list[index]
 
-    def __eq__(self, rhs):
-        if not isinstance(rhs, ObservableList):
+    def __eq__(self, other):
+        if not isinstance(other, ObservableList):
             return NotImplemented
-        return self.list == rhs.list
+        return self.list == other.list
+
+    def __ne__(self, other):
+        if not isinstance(other, ObservableList):
+            return NotImplemented
+        return self.list != other.list
 
     def __reversed__(self):
-        return reversed(self.list)
+        return ObservableList(list(reversed(self.list)))
+
+    def __add__(self, other):
+        return ObservableList(self.list + other.list)
 
     # list methods 
     def append(self, item) -> None:

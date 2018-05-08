@@ -113,6 +113,28 @@ class ObservableListMutationTests(unittest.TestCase):
         self.assertEqual(0, len(self.emptyList))
         self.assertEqual(0, len(self.loadedList))
 
+    def test_concat_operator_on_combines_two_ObservableList(self):
+        # arrange
+        new_list = ObservableList([5, 6, 7, 8])
+        expected_output = ObservableList([1, 2, 3, 4, 5, 6, 7, 8])
+
+        # act
+        self.emptyList += new_list
+        self.loadedList += new_list
+
+        # assert
+        self.assertEqual(new_list, self.emptyList)
+        self.assertEqual(expected_output, self.loadedList)
+
+    def test_ObservableList_item_membership(self):
+        # arrange & act
+        self.loadedList.extend([6, 7, 8, 9])
+
+        # assert
+        self.assertTrue(1 in self.loadedList)
+        self.assertTrue(6 in self.loadedList)
+        self.assertTrue(5 not in self.loadedList)
+
     def tearDown(self):
         self.emptyList.dispose()
         self.loadedList.dispose()
