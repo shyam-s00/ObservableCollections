@@ -9,5 +9,6 @@ setup(
     license='MIT',
     download_url='https://github.com/shyam-s00/observablelist.py',
 
-    packages=['reactive']
+    packages=['reactive'],
+    install_requires=['rx']
 )

@@ -1,26 +1,24 @@
 import threading
-import time
-
-from rx import Observable, Observer
-from rx.core import ObservableBase
-from rx.disposables import AnonymousDisposable
-from rx.subjects import Subject
-from rx.internal import DisposedException
 
 from collections import Iterable
 from collections.abc import Sequence
 
-from .CollectionChangeAction import CollectionChangeAction
+from rx import Observable, Observer
+from rx.core import ObservableBase, Disposable
+from rx.internal import DisposedException
+from rx.subjects import Subject
+
 from .CollectionChange import CollectionChange
+
 
 class ObservableList(Sequence):
     
-    def __init__(self, items = None):
+    def __init__(self, items=None):
         self.list = items if items is not None else []
         self._collectionChanges = Subject()
         self.lock = threading.RLock() 
         self.is_disposed = False
-        self._supressNotification = False
+        self._suppressNotification = False
 
     # protocol implementations
     def __len__(self):
@@ -60,7 +58,8 @@ class ObservableList(Sequence):
             self._onCollectionChanges(CollectionChange.Add(self, item))
 
     def remove(self, item) -> None:
-        """ remove first occurence of the item and publishes the change notification. Publishes ValueError to on_error if the item is not present. """
+        """ remove first occurrence of the item and publishes the change notification.
+        Publishes ValueError to on_error if the item is not present. """
         with self.lock:
             self.check_disposed()
             try:
@@ -104,7 +103,7 @@ class ObservableList(Sequence):
         return Observable.create(lambda obs: self._subscribe(obs))
 
     def dispose(self):
-        """ Clears all the value from the list, unsubcribes all the subscribers and release resources """
+        """ Clears all the value from the list, unsubscribe all the subscribers and release resources """
         with self.lock:
             self._beginSuppressNotification()
             self.list.clear()
@@ -119,13 +118,13 @@ class ObservableList(Sequence):
 
     def _beginSuppressNotification(self) -> None:
         """ Suppresses all change notification from firing """
-        self._supressNotification = True
+        self._suppressNotification = True
 
     def _endSuppressNotification(self) -> None:
-        """ Resumes or Begins pushing change notificaions for every subsequent change operations made """
-        self._supressNotification = False
+        """ Resumes or Begins pushing change notifications for every subsequent change operations made """
+        self._suppressNotification = False
 
-    def _subscribe(self, observer: Observer) -> AnonymousDisposable:
+    def _subscribe(self, observer: Observer) -> Disposable:
         if self.is_disposed:
             return Observable.throw(DisposedException('Trying to access an already disposed object')) \
                     .subscribe(observer)
@@ -133,7 +132,7 @@ class ObservableList(Sequence):
             return self._collectionChanges.subscribe(observer)
 
     def _onCollectionChanges(self, item: CollectionChange):
-        if not self._supressNotification:
+        if not self._suppressNotification:
             try:
                 self._collectionChanges.on_next(item)
             except Exception as ex:

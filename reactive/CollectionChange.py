@@ -2,13 +2,18 @@ from collections import Iterable
 
 from .CollectionChangeAction import CollectionChangeAction
 
+
 class CollectionChange:
-    """ A class method that holds the collection change type, source and changed items. Also provides factory methods for creating  
-        type of collection change events """
-    def __init__(self, source = None, action = None, items = None):
-        self.source = source if source is not None else []  # consider changing this into tuple as it need not be mutable.
+    """ A class method that holds the collection change type, source and changed items.
+    Also provides factory methods for creating
+    type of collection change events """
+
+    def __init__(self, source=None, action=None, items=None):
+        # consider changing this into tuple as it need not be mutable.
+        self.source = source if source is not None else []
         self.action: CollectionChangeAction = action
-        self.items = items if items is not None else [] # consider changing this into tuple as it need not be mutable.
+        # consider changing this into tuple as it need not be mutable.
+        self.items = items if items is not None else []
 
     @property
     def Source(self):
