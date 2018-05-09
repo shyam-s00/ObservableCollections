@@ -1,4 +1,7 @@
 import unittest
+
+from rx.internal import DisposedException
+
 from reactive.ObservableList import ObservableList
 
 
@@ -39,3 +42,33 @@ class CollectionConstructionTests(unittest.TestCase):
         self.assertFalse(ol1 == normal_list)
         self.assertNotEqual(ol1, ol3)
         self.assertTrue(ol3 != normal_list)
+
+    def test_disposed_list_cannot_be_used_further(self):
+        # arrange
+        ol = ObservableList([1, 2, 3, 4])
+
+        # act
+        ol.dispose()
+
+        # assert
+        with self.assertRaises(DisposedException):
+            ol.append(5)
+
+    def test_ObservableList_index_access(self):
+        # arrange
+        ol = ObservableList([1, 2, 3, 4, -1, 6, 7, -2])
+
+        # act & assert
+        self.assertEqual(3, ol[2])
+        self.assertEqual(-2, ol[-1])
+        self.assertEqual(1, ol[0])
+
+    def test_ObservableList_slicing_returns_list_slice(self):
+        # arrange
+        ol = ObservableList([1, 3, 5, 7, 9])
+
+        # act & assert
+        self.assertEqual(ObservableList([1, 3]), ol[:2])
+        self.assertEqual(ObservableList([5, 7]), ol[2:4])
+        self.assertEqual(ObservableList([1, 3, 5, 7, 9]), ol[:])
+        self.assertEqual(ObservableList([3, 5, 7]), ol[-4:-1])

@@ -25,7 +25,7 @@ class ObservableList(Sequence):
         return len(self.list)
 
     def __getitem__(self, index):
-        return self.list[index]
+        return ObservableList(list(self.list[index])) if isinstance(index, slice) else self.list[index]
 
     def __eq__(self, other):
         if not isinstance(other, ObservableList):
