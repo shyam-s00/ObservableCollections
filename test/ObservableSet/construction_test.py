@@ -1,0 +1,65 @@
+import unittest
+
+from reactive.ObservableSet import ObservableSet
+
+
+class ObservableSetConstructionTest(unittest.TestCase):
+
+    def test_ObservableSet_creation_without_items(self):
+        # arrange & act
+        os = ObservableSet()
+
+        # assert
+        self.assertIsNotNone(os)
+        self.assertTrue(isinstance(os, ObservableSet))
+        self.assertEqual(len(os), 0)
+
+    def test_ObservableSet_creation_with_items(self):
+        # arrange & act
+        os = ObservableSet([1, 2, 3, 4])
+
+        # assert
+        self.assertIsNotNone(os)
+        self.assertTrue(isinstance(os, ObservableSet))
+        self.assertEqual(len(os), 4)
+
+    def test_ObservableSet_creation_with_duplicate_items(self):
+        # arrange & act
+        os = ObservableSet([1, 2, 2, 3])
+
+        # assert
+        self.assertIsNotNone(os)
+        self.assertTrue(isinstance(os, ObservableSet))
+        self.assertEqual(len(os), 3)
+
+    def test_ObservableSet_creation_with_a_normal_set(self):
+        # arrange & act
+        os = ObservableSet({1, 2, 2, 3})
+
+        # assert
+        self.assertIsNotNone(os)
+        self.assertTrue(isinstance(os, ObservableSet))
+        self.assertEqual(len(os), 3)
+
+    def test_ObservableSet_creation_with_a_tuple(self):
+        # arrange & act
+        os = ObservableSet((1, 2, 3, 3, 2))
+
+        # assert
+        self.assertIsNotNone(os)
+        self.assertTrue(isinstance(os, ObservableSet))
+        self.assertEqual(len(os), 3)
+
+    def test_ObservableSet_creation_with_mixed_data_types(self):
+        # arrange & act
+        os = ObservableSet({1, "2", "Three", (4, 5, 6), ("7", "Eight")})
+
+        # assert
+        self.assertIsNotNone(os)
+        self.assertTrue(isinstance(os, ObservableSet))
+        self.assertEqual(len(os), 5)
+
+    def test_ObservableSet_creation_with_set_literal_containing_list_fails(self):
+        # arrange, act & assert
+        with self.assertRaises(TypeError):
+            ObservableSet({"a", "b", ["c", "d"]})

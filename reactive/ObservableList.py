@@ -113,6 +113,7 @@ class ObservableList(Sequence):
     def dispose(self):
         """ Clears all the value from the list, unsubscribe all the subscribers and release resources """
         with self.lock:
+            self.check_disposed()
             self._beginSuppressNotification()
             self.list.clear()
             self.list = None
