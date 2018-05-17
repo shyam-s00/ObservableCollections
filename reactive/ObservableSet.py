@@ -10,7 +10,8 @@ from rx.subjects import Subject
 from .CollectionChange import CollectionChange
 
 
-class ObservableSet:
+class ObservableSet(Iterable):
+
     def __init__(self, items: Iterable=None):
         self._set = set() if items is None else set(items)
         self.is_disposed = False
@@ -24,6 +25,19 @@ class ObservableSet:
 
     def __contains__(self, item):
         return self._set.__contains__(item)
+
+    def __iter__(self):
+        return iter(self._set)
+
+    def __eq__(self, other):
+        if not isinstance(other, ObservableSet):
+            return NotImplemented
+        return self._set == other._set
+
+    def __ne__(self, other):
+        if not isinstance(other, ObservableSet):
+            return NotImplemented
+        return self._set != other._set
 
     # set methods
     def add(self, element):
@@ -50,7 +64,7 @@ class ObservableSet:
                 self._onCollectionChanges(CollectionChange.Remove(self, element))
 
     def remove(self, element) -> None:
-        """ Remove an element from n ObservableSet; it must be a member. Publishes change notifications
+        """ Remove an element from an ObservableSet; it must be a member. Publishes change notifications
         If the element is not a member, publishes KeyError to on_error channel. """
         with self.lock:
             self.check_disposed()
@@ -68,6 +82,7 @@ class ObservableSet:
             try:
                 out = self._set.pop()
                 self._onCollectionChanges(CollectionChange.Remove(self, out))
+                return out
             except KeyError as ke:
                 self._collectionChanges.on_error(ke)
 
@@ -78,26 +93,26 @@ class ObservableSet:
             self._set.clear()
             self._onCollectionChanges(CollectionChange.Clear(self))
 
-    def difference_update(self, *args: Iterable) -> None:
+    def difference_update(self, *args) -> None:
         """ Remove all elements of another ObservableSet from this ObservableSet. Publishes change notifications """
         with self.lock:
             self.check_disposed()
-            self._set.difference_update(args)
+            self._set.difference_update(*args)
             self._onCollectionChanges(CollectionChange.Extend(self, self._set))  # Need better name...
 
-    def intersection_update(self, *args: Iterable) -> None:
+    def intersection_update(self, *args) -> None:
         """ Update an ObservableSet with the intersection of itself and another. Publishes change notifications """
         with self.lock:
             self.check_disposed()
-            self._set.intersection_update(args)
+            self._set.intersection_update(*args)
             self._onCollectionChanges(CollectionChange.Extend(self, self._set))
 
-    def symmetric_difference_update(self, *args: Iterable) -> None:
+    def symmetric_difference_update(self, *args) -> None:
         """ Update an ObservableSet with the symmetric difference of itself and another.
         Publishes change notification """
         with self.lock:
             self.check_disposed()
-            self._set.symmetric_difference_update(args)
+            self._set.symmetric_difference_update(*args)
             self._onCollectionChanges(CollectionChange.Extend(self, self._set))
 
     def difference(self, *args):
@@ -105,47 +120,48 @@ class ObservableSet:
         *Does not publish change notifications* """
         with self.lock:
             self.check_disposed()
-            return ObservableSet(self._set.difference(args))
+            out = self._set.difference(*args)
+            return ObservableSet(out)
 
-    def intersection(self, *args: Iterable):
+    def intersection(self, *args):
         """ Return the intersection of two ObservableSets as a new ObservableSet.
         *Does not publish change notifications* """
         with self.lock:
             self.check_disposed()
-            return ObservableSet(self._set.intersection(args))
+            return ObservableSet(self._set.intersection(*args))
 
-    def symmetric_difference(self, *args: Iterable):
+    def symmetric_difference(self, *args):
         """ Return the symmetric difference of two ObservableSets as a new ObservableSet.
         *Does not publish change notifications* """
         with self.lock:
             self.check_disposed()
-            return ObservableSet(self._set.symmetric_difference(args))
+            return ObservableSet(self._set.symmetric_difference(*args))
 
     def union(self, *args):
         """ Return the union of ObservableSets as a new ObservableSet. *Does not publish change notification* """
         with self.lock:
             self.check_disposed()
-            return ObservableSet(self._set.union(args))
+            return ObservableSet(self._set.union(*args))
 
-    def isdisjoint(self, *args: Iterable) -> bool:
+    def isdisjoint(self, *args) -> bool:
         """ Return True if two ObservableSets have a null intersection. *Does not publish change notification* """
         with self.lock:
             self.check_disposed()
-            return self._set.isdisjoint(args)
+            return self._set.isdisjoint(*args)
 
-    def issubset(self, *args: Iterable) -> bool:
+    def issubset(self, *args) -> bool:
         """ Report whether another ObservableSet contains this ObservableSet.
         *Does not publish change notifications* """
         with self.lock:
             self.check_disposed()
-            return self._set.issubset(args)
+            return self._set.issubset(*args)
 
-    def issuperset(self, *args: Iterable) -> bool:
+    def issuperset(self, *args) -> bool:
         """ Report whether this ObservableSet contains another ObservableSet.
         *Does not publish change notifications* """
         with self.lock:
             self.check_disposed()
-            return self._set.issuperset(args)
+            return self._set.issuperset(*args)
 
     # TODO: Move these methods to a base class as its common
     # api methods
