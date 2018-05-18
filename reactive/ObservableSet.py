@@ -98,14 +98,14 @@ class ObservableSet(Iterable):
         with self.lock:
             self.check_disposed()
             self._set.difference_update(*args)
-            self._onCollectionChanges(CollectionChange.Extend(self, self._set))  # Need better name...
+            self._onCollectionChanges(CollectionChange.Extend(self, self))  # Need better name...
 
     def intersection_update(self, *args) -> None:
         """ Update an ObservableSet with the intersection of itself and another. Publishes change notifications """
         with self.lock:
             self.check_disposed()
             self._set.intersection_update(*args)
-            self._onCollectionChanges(CollectionChange.Extend(self, self._set))
+            self._onCollectionChanges(CollectionChange.Extend(self, self))
 
     def symmetric_difference_update(self, *args) -> None:
         """ Update an ObservableSet with the symmetric difference of itself and another.
@@ -113,7 +113,7 @@ class ObservableSet(Iterable):
         with self.lock:
             self.check_disposed()
             self._set.symmetric_difference_update(*args)
-            self._onCollectionChanges(CollectionChange.Extend(self, self._set))
+            self._onCollectionChanges(CollectionChange.Extend(self, self))
 
     def difference(self, *args):
         """ Return the difference of two or more ObservableSets as a new ObservableSet.
