@@ -7,7 +7,7 @@ setup(
     author='Shiyam S',
     author_email='austin.shyam@gmail.com',
     license='MIT',
-    download_url='https://github.com/shyam-s00/observablelist.py',
+    download_url='https://github.com/shyam-s00/ObservableCollections',
 
     packages=['reactive'],
     install_requires=['rx']
