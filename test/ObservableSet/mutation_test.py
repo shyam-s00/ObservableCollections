@@ -144,6 +144,40 @@ class ObservableSetMutationTests(unittest.TestCase):
         self.assertEqual(out_1, ObservableSet((2, 3, 4, 5)))
         self.assertEqual(out_2, ObservableSet((2, 3, 4, 5, 6, 7, 8)))
 
+    def test_isdisjoint_returns_true_or_false_for_two_ObservableSet(self):
+        # arrange
+        set_a = ObservableSet((1, 2, 3, 4))
+        set_b = ObservableSet((5, 6, 7))
+        set_c = ObservableSet((4, 5, 6))
+
+        # act & assert
+        self.assertTrue(set_a.isdisjoint(set_b))
+        self.assertFalse(set_a.isdisjoint(set_c))
+
+    def test_issubset_returns_true_or_false_for_two_ObservableSet(self):
+        # arrange
+        set_a = ObservableSet((1, 2, 3))
+        set_b = ObservableSet((1, 2, 3, 4, 5))
+        set_c = ObservableSet((1, 2, 4, 5))
+
+        # act & assert
+        self.assertTrue(set_a.issubset(set_b))
+        self.assertFalse(set_b.issubset(set_a))
+        self.assertTrue(set_c.issubset(set_b))
+        self.assertFalse(set_a.issubset(set_c))
+
+    def test_issuperset_returns_true_or_false_for_two_ObservableSet(self):
+        # arrange
+        set_a = ObservableSet((1, 2, 3, 4, 5))
+        set_b = ObservableSet((1, 2, 3))
+        set_c = ObservableSet((1, 2, 3))
+
+        # act & assert
+        self.assertTrue(set_a.issuperset(set_b))
+        self.assertFalse(set_b.issuperset(set_a))
+        self.assertTrue(set_c.issuperset(set_b))
+        self.assertTrue(set_b.issuperset(set_c))
+
     def tearDown(self):
         self.empty_os.dispose()
         self.loaded_os.dispose()

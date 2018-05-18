@@ -63,3 +63,13 @@ class ObservableSetConstructionTest(unittest.TestCase):
         # arrange, act & assert
         with self.assertRaises(TypeError):
             ObservableSet({"a", "b", ["c", "d"]})
+
+    def test_equality_of_ObservableSet_with_set(self):
+        # arrange
+        normal_set = {1, 2, 3, 4}
+        observable_set = ObservableSet((1, 2, 3, 4))
+
+        # act & assert
+        self.assertFalse(observable_set == normal_set)
+        self.assertTrue(normal_set != observable_set)
+
