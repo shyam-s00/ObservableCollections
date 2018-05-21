@@ -10,10 +10,10 @@ class CollectionChange:
 
     def __init__(self, source=None, action=None, items=None):
         # consider changing this into tuple as it need not be mutable.
-        self.source = source if source is not None else []
+        self.source = source if source is not None else ()
         self.action: CollectionChangeAction = action
         # consider changing this into tuple as it need not be mutable.
-        self.items = items if items is not None else []
+        self.items = items if items is not None else ()
 
     @property
     def Source(self):
@@ -44,5 +44,5 @@ class CollectionChange:
         return cls(source=source, action=CollectionChangeAction.CLEAR)
 
     @classmethod
-    def IndexChanged(cls, source):
-        return cls(source=source, action=CollectionChangeAction.INDEX, items=source.list)
+    def IndexChanged(cls, source, items):
+        return cls(source=source, action=CollectionChangeAction.INDEX, items=items)

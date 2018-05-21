@@ -2,7 +2,7 @@ import unittest
 
 from rx.testing import ReactiveTest, TestScheduler
 
-from reactive.CollectionChangeAction import CollectionChangeAction
+from reactive.shared.CollectionChangeAction import CollectionChangeAction
 from reactive.ObservableList import ObservableList
 
 on_next = ReactiveTest.on_next
@@ -174,7 +174,7 @@ class RxNotificationTest(unittest.TestCase):
 
     def test_ObservableList_clear_removes_everything_produces_event(self):
         # arrange
-        expected_messages = [on_next(0, [])]
+        expected_messages = [on_next(0, ())]
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \

@@ -3,7 +3,7 @@ import unittest
 from rx.testing import TestScheduler, ReactiveTest
 from rx.internal import DisposedException
 
-from reactive.CollectionChangeAction import CollectionChangeAction
+from reactive.shared.CollectionChangeAction import CollectionChangeAction
 from reactive.ObservableSet import ObservableSet
 
 on_next = ReactiveTest.on_next
