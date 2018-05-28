@@ -135,6 +135,14 @@ class ObservableListMutationTests(unittest.TestCase):
         self.assertTrue(6 in self.loadedList)
         self.assertTrue(5 not in self.loadedList)
 
+    def test_concat_operator_on_adding_list_with_ObservableList(self):
+        # arrange
+        ol = ObservableList([1, 2, 3, 4])
+        nl = [5, 6, 7, 8]
+
+        # act & assert
+        self.assertRaises(TypeError, lambda: ol + nl)
+
     def tearDown(self):
         self.emptyList.dispose()
         self.loadedList.dispose()

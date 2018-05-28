@@ -73,3 +73,17 @@ class ObservableSetConstructionTest(unittest.TestCase):
         self.assertFalse(observable_set == normal_set)
         self.assertTrue(normal_set != observable_set)
 
+    def test_iterable_protocol_of_ObservableSet(self):
+        # arrange
+        observable_set = ObservableSet((1, 2, 3, 4))
+
+        # act
+        i = iter(observable_set)
+
+        # assert
+        self.assertEqual(next(i), 1)
+        self.assertEqual(next(i), 2)
+        self.assertEqual(next(i), 3)
+        self.assertEqual(next(i), 4)
+        self.assertRaises(StopIteration, lambda: next(i))
+

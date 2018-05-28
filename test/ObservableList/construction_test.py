@@ -72,3 +72,16 @@ class CollectionConstructionTests(unittest.TestCase):
         self.assertEqual(ObservableList([5, 7]), ol[2:4])
         self.assertEqual(ObservableList([1, 3, 5, 7, 9]), ol[:])
         self.assertEqual(ObservableList([3, 5, 7]), ol[-4:-1])
+
+    def test_ObservableList_iterable_protocol(self):
+        # arrange
+        ol = ObservableList([1, 3, 5])
+
+        # act
+        i = iter(ol)
+
+        # assert
+        self.assertEqual(next(i), 1)
+        self.assertEqual(next(i), 3)
+        self.assertEqual(next(i), 5)
+        self.assertRaises(StopIteration, lambda: next(i))

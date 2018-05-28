@@ -36,7 +36,7 @@ class ObservableList(AbstractObservableCollection):
         return ObservableList(self._list + other._list)
 
     def __iter__(self):
-        return iter(self._list())
+        return iter(self._list)
 
     def __contains__(self, item):
         return item in self._list
@@ -108,7 +108,7 @@ class ObservableList(AbstractObservableCollection):
                 self._onCollectionChanges(CollectionChange.IndexChanged(self, self._list))
 
     def dispose(self):
-        """ Clears all the values from the set, unsubscribe all the subscribers and release resources """
+        """ Clears all the values from the list, unsubscribe all the subscribers and release resources """
         with self.lock:
             self.check_disposed()
             self._beginSuppressNotification()
