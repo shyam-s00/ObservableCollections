@@ -47,6 +47,7 @@ class ObservableDictionaryConstructionTests(unittest.TestCase):
         self.assertTrue(observable_dict == ObservableDict({1: 'Crash Bandicoot', 2: 'Neo Cortex'}))
         self.assertFalse(observable_dict == normal_dict)
         self.assertTrue(observable_dict != normal_dict)
+        self.assertFalse(observable_dict != ObservableDict(normal_dict))
 
     def test_membership_of_ObservableDict(self):
         # arrange
@@ -67,3 +68,14 @@ class ObservableDictionaryConstructionTests(unittest.TestCase):
         self.assertEqual(next(i), 1)
         self.assertEqual(next(i), 2)
         self.assertRaises(StopIteration, lambda: next(i))
+
+    def test_ObservableDict_values_returns_view_of_values(self):
+        # arrange
+        observable_dict = ObservableDict({1: 'Crash Bandicoot', 2: 'Neo Cortex'})
+
+        # act
+        val = observable_dict.values()
+
+        # assert
+        self.assertIsNotNone(val)
+        self.assertEqual(len(val), 2)

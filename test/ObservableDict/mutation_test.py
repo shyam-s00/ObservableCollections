@@ -30,6 +30,7 @@ class ObservableDictMutationTests(unittest.TestCase):
         self.assertEqual(val1, 'Crash')
 
         with self.assertRaises(KeyError):
+            # noinspection PyUnusedLocal
             value = self.od[5]
 
     def test_ObservableDict_del_a_value_or_entire_dict(self):
@@ -97,6 +98,23 @@ class ObservableDictMutationTests(unittest.TestCase):
         self.assertIsNotNone(val1)
         self.assertEqual(val1, 'Dingo')
         self.assertIsNone(val2)
+
+    def test_ObservableDict_fromkeys_creates_new_ObservableDict(self):
+        # arrange & act
+        new_dict = ObservableDict.fromkeys({1, 2, 3, 4, 5})
+
+        # assert
+        self.assertIsNotNone(new_dict)
+        self.assertTrue(isinstance(new_dict, ObservableDict))
+        self.assertEqual(len(new_dict), 5)
+
+    def test_ObservableDict_clear_removes_all_items_in_dictionary(self):
+        # arrange & act
+        self.od.clear()
+
+        # assert
+        self.assertIsNotNone(self.od)
+        self.assertEqual(len(self.od), 0)
 
     def tearDown(self):
         self.od.dispose()

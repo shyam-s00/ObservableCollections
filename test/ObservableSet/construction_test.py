@@ -86,4 +86,3 @@ class ObservableSetConstructionTest(unittest.TestCase):
         self.assertEqual(next(i), 3)
         self.assertEqual(next(i), 4)
         self.assertRaises(StopIteration, lambda: next(i))
-

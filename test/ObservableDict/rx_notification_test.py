@@ -152,3 +152,36 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         self.assertEqual(self.od.get(2), 'Polar')
         self.assertTrue(isinstance(obs.messages[0].value.value, ObservableDict))
         self.assertEqual(list(obs.messages[0].value.value._dict.values()), expected_values)
+
+    def test_ObservableDict_clear_removes_all_items_and_publish_clear_event(self):
+        # arrange
+        obs = self.scheduler.create_observer()
+
+        self.od.when_collection_changes() \
+            .subscribe(obs)
+
+        # act
+        self.od.clear()
+
+        # assert
+        self.assertEqual(len(self.od), 0)
+        self.assertEqual(len(obs.messages), 1)
+        self.assertEqual(obs.messages[0].value.value.Items, ())
+        self.assertEqual(obs.messages[0].value.value.Action, CollectionChangeAction.CLEAR)
+
+    def test_ObservableSet_with_any_operation_after_dispose_throws_DisposedException(self):
+        # arrange
+        obs = self.scheduler.create_observer()
+        new_dict = ObservableDict({6: 'Polar', 5: 'Dingo'})
+
+        new_dict.when_collection_changes() \
+            .map(lambda x: x.Items) \
+            .subscribe(obs)
+
+        # act & assert
+        new_dict.dispose()
+        with self.assertRaises(DisposedException):
+            new_dict.setdefault(6)
+
+    def tearDown(self):
+        self.od.dispose()

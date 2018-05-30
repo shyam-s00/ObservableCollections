@@ -181,4 +181,3 @@ class ObservableSetMutationTests(unittest.TestCase):
     def tearDown(self):
         self.empty_os.dispose()
         self.loaded_os.dispose()
-
