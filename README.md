@@ -10,9 +10,9 @@ It contains following Observable collections and internally depends on [RxPy](ht
     * ObservableDict
     * ObservableSet
 
-These collection exposes ```when_collection_changes()``` method that creates an Observable which can be subscribed. 
+These collections expose ```when_collection_changes()``` method that creates an Observable which can be subscribed. 
 
-Any changes to the ```ObservableList``` that modifies the collection, publishes the event either via on_next or on_error
+Any changes to the ```ObservableList / ObservableSet / ObservableDict``` that modifies the collection, publishes the event either via on_next or error via on_error
 
 **Installation**
 

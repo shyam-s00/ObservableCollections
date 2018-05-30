@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='observable-collections',
-    version='0.1',
+    version='0.1.2',
     description='Rx based collections that supports change notification',
     long_description=long_description,
     long_description_content_type='text/markdown',
