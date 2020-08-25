@@ -2,6 +2,7 @@ import unittest
 
 from rx.testing import TestScheduler, ReactiveTest
 from rx.internal import DisposedException
+from rx import operators as op
 
 from reactive.ObservableDict import ObservableDict
 from reactive.shared.CollectionChangeAction import CollectionChangeAction
@@ -22,7 +23,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         expected_message = [on_next(0, 2)]
 
         self.od.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -39,7 +40,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         expected_error = [on_error(0, KeyError(5))]
 
         self.od.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -54,7 +55,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         expected_message = [on_next(0, 'Coco'), on_error(0, KeyError(5))]
 
         self.od.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -71,7 +72,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.od.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -89,7 +90,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         expected_error = [on_error(0, KeyError('popitem(): dictionary is empty'))]
 
         empty.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -123,7 +124,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         expected_message = []
 
         self.od.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -141,7 +142,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         expected_values = ['Polar', 'Dingo']
 
         self.od.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -175,7 +176,7 @@ class RxNotificationObservableDictTest(unittest.TestCase):
         new_dict = ObservableDict({6: 'Polar', 5: 'Dingo'})
 
         new_dict.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act & assert

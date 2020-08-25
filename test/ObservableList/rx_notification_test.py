@@ -4,6 +4,7 @@ from rx.testing import ReactiveTest, TestScheduler
 
 from reactive.shared.CollectionChangeAction import CollectionChangeAction
 from reactive.ObservableList import ObservableList
+from rx import operators as op
 
 on_next = ReactiveTest.on_next
 on_error = ReactiveTest.on_error
@@ -20,7 +21,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items))\
             .subscribe(obs)
 
         # act
@@ -63,9 +64,7 @@ class RxNotificationTest(unittest.TestCase):
         expected_messages = [on_next(0, [0, 1, 2, 3])]
         obs = self.scheduler.create_observer()
 
-        self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
-            .subscribe(obs)
+        self.ol.when_collection_changes().pipe(op.map(lambda x: x.Items)).subscribe(obs)
 
         # act
         self.ol.extend([0, 1, 2, 3])
@@ -80,7 +79,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -99,7 +98,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -116,7 +115,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -131,7 +130,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -146,7 +145,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -161,7 +160,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -178,7 +177,7 @@ class RxNotificationTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act

@@ -3,6 +3,7 @@ import unittest
 from concurrent.futures import ThreadPoolExecutor
 from timeit import timeit
 
+from rx import operators as op
 from rx.testing import TestScheduler
 
 from reactive.ObservableList import ObservableList
@@ -19,7 +20,7 @@ class ConcurrentModification(unittest.TestCase):
         # arrange
         obs = self.scheduler.create_observer()
         self.ol.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
         # act
         with ThreadPoolExecutor(max_workers=4) as executor:

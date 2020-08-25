@@ -1,12 +1,19 @@
 import threading
 
 from abc import ABC, abstractmethod
-from collections import Iterable
+from collections.abc import Iterable
 
-from rx import Observable, Observer
-from rx.core import ObservableBase, Disposable
+#from rx.core import Observable, Observer, typing
+
+import rx
+
+from rx.core import Observable, Observer
+from rx.core.typing import Observable as ObservableBase
+from rx.disposable import Disposable
 from rx.internal import DisposedException
-from rx.subjects import Subject
+from rx.subject import Subject
+from rx.core.typing import Scheduler
+from rx.scheduler import TimeoutScheduler
 
 from reactive.shared.CollectionChange import CollectionChange
 
@@ -46,22 +53,21 @@ class AbstractObservableCollection(ABC, Iterable):
         self._collectionChanges.dispose()
         self.is_disposed = True
 
-    def when_collection_changes(self) -> ObservableBase:
-        return Observable.create(lambda obs: self._subscribe(obs))
+    def when_collection_changes(self) -> rx.core.typing.Observable:
+        return rx.create(self._subscribe)
 
-    def _subscribe(self, observer: Observer) -> Disposable:
+    def _subscribe(self, obs: rx.core.typing.Observer, schd: rx.core.typing.Scheduler) -> rx.core.typing.Disposable:
         if self.is_disposed:
-            return Observable.throw(DisposedException('Trying to access an already disposed object')) \
-                .subscribe(observer)
+            return rx.throw(DisposedException('Trying to access an already disposed object')).subscribe(observer=obs, scheduler=schd)
         else:
-            return self._collectionChanges.subscribe(observer)
+            return self._collectionChanges.subscribe(observer=obs, scheduler=schd)
 
     def _onCollectionChanges(self, item: CollectionChange):
         if not self._suppressNotification:
             try:
                 self._collectionChanges.on_next(item)
             except Exception as ex:
-                self._collectionChanges.on_error(ex)
+                self._collectionChanges.on_error(error=ex)
 
     # internal methods
     def _beginSuppressNotification(self) -> None:

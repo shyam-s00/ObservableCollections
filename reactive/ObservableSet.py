@@ -1,4 +1,4 @@
-from collections import Iterable
+from collections.abc import Iterable
 
 from reactive.shared.AbstractObservableCollection import AbstractObservableCollection
 from reactive.shared.CollectionChange import CollectionChange

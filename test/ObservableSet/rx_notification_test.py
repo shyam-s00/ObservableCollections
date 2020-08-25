@@ -1,5 +1,6 @@
 import unittest
 
+from rx import operators as op
 from rx.testing import TestScheduler, ReactiveTest
 from rx.internal import DisposedException
 
@@ -21,7 +22,7 @@ class RxNotificationObservableSetTest(unittest.TestCase):
         obs = self.scheduler.create_observer()
 
         self.os.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -81,7 +82,7 @@ class RxNotificationObservableSetTest(unittest.TestCase):
         expected_message = []
 
         self.os.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -111,7 +112,7 @@ class RxNotificationObservableSetTest(unittest.TestCase):
         expected_error = [on_error(0, KeyError(1))]
 
         self.os.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act
@@ -180,7 +181,7 @@ class RxNotificationObservableSetTest(unittest.TestCase):
         set_b = ObservableSet((4, 5, 9, 10))
 
         set_b.when_collection_changes() \
-            .map(lambda x: x.Items) \
+            .pipe(op.map(lambda x: x.Items)) \
             .subscribe(obs)
 
         # act & assert
